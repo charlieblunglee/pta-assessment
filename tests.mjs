@@ -11,7 +11,7 @@ const run=(a,archetype="nonclinical",mixedWork=false)=>E.evaluate({answers:a,arc
 for(const [score,code] of [[47,"P1"],[48,"P2"],[61,"P2"],[62,"P3"],[75,"P3"],[76,"P4"],[89,"P4"],[90,"P5"]])assert.equal(E.packageByScore(score).code,code,`score ${score}`);
 let a=answers(3);setDomain(a,"D4",1);assert.equal(run(a).finalPackage.code,"P1","D4 Yellow -> P1");
 a=answers(3);setDomain(a,"D1",1);assert.equal(run(a).finalPackage.code,"P2","D1 Yellow -> P2");
-a=answers(2);C.domains.forEach(d=>d.questions.slice(0,3).forEach(q=>a[q.id].score=3));assert.equal(run(a).finalPackage.code,"P3","no Yellow -> P3");
+a=answers(2);C.domains.forEach(d=>d.questions.slice(0,3).forEach(q=>a[q.id].score=3));assert.equal(run(a).finalPackage.code,"P4","no Yellow -> P4");
 a=answers(3);a["D4-Q5"].score=1;assert.ok(Number(run(a).finalPackage.code.slice(1))<=2,"privacy gate");
 a=answers(3);a["D5-Q2"].score=1;assert.ok(Number(run(a,"clinical").finalPackage.code.slice(1))<=2,"clinical governance gate");
 assert.ok(Number(run(a,"him").finalPackage.code.slice(1))<=2,"HIM governance gate");assert.equal(run(a,"nonclinical").finalPackage.code,"P5","non-clinical no clinical cap");

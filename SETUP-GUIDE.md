@@ -107,7 +107,9 @@ Never add the email API key to `app.js`, HTML, or any browser-delivered file. Wi
 
 Each domain has seven questions. Yellow = 1, Green = 2, and Blue = 3.
 
-`domain score = (sum of seven answers − 7) / 14 × 100`
+`domain score = 20 + ((sum of seven answers − 7) / 14 × 80)`
+
+This gives every completed domain a score from 20 to 100 (all Yellow = 20, all Green = 60, all Blue = 100). A score of 0 is reserved for an unscored domain and is never a valid completed result.
 
 The program score is the weighted average:
 
