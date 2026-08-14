@@ -1,0 +1,24 @@
+import fs from "node:fs";
+import vm from "node:vm";
+import assert from "node:assert/strict";
+const root=new URL("./",import.meta.url);
+const context={window:{}};vm.createContext(context);
+for(const file of ["assessment-data.js","config.js","solutions.js","engine.js"])vm.runInContext(fs.readFileSync(new URL(file,root),"utf8"),context,{filename:file});
+const {PTA_CONFIG:C,PTA_ENGINE:E,PTA_SOLUTIONS:S}=context.window;
+const answers=(score=3,evidence=true)=>Object.fromEntries(C.domains.flatMap(d=>d.questions.map(q=>[q.id,{score,note:evidence?"validated evidence":"",artifactName:""}])));
+const setDomain=(a,id,score)=>C.domains.find(d=>d.id===id).questions.forEach(q=>a[q.id]={...a[q.id],score});
+const run=(a,archetype="nonclinical",mixedWork=false)=>E.evaluate({answers:a,archetype,mixedWork});
+for(const [score,code] of [[47,"P1"],[48,"P2"],[61,"P2"],[62,"P3"],[75,"P3"],[76,"P4"],[89,"P4"],[90,"P5"]])assert.equal(E.packageByScore(score).code,code,`score ${score}`);
+let a=answers(3);setDomain(a,"D4",1);assert.equal(run(a).finalPackage.code,"P1","D4 Yellow -> P1");
+a=answers(3);setDomain(a,"D1",1);assert.equal(run(a).finalPackage.code,"P2","D1 Yellow -> P2");
+a=answers(2);C.domains.forEach(d=>d.questions.slice(0,3).forEach(q=>a[q.id].score=3));assert.equal(run(a).finalPackage.code,"P3","no Yellow -> P3");
+a=answers(3);a["D4-Q5"].score=1;assert.ok(Number(run(a).finalPackage.code.slice(1))<=2,"privacy gate");
+a=answers(3);a["D5-Q2"].score=1;assert.ok(Number(run(a,"clinical").finalPackage.code.slice(1))<=2,"clinical governance gate");
+assert.ok(Number(run(a,"him").finalPackage.code.slice(1))<=2,"HIM governance gate");assert.equal(run(a,"nonclinical").finalPackage.code,"P5","non-clinical no clinical cap");
+a=answers(3,false);assert.equal(run(a).assessmentDisposition,"Deep-Dive Assessment Required","low evidence");
+a=answers(3,false);Object.values(a).slice(0,30).forEach(x=>x.note="evidence");assert.equal(run(a).assessmentDisposition,"Targeted Further Analysis Recommended","70-84 evidence");
+a=answers(3,true);assert.equal(run(a).assessmentDisposition,"Recommendation Ready","high evidence");
+a=answers(2,true);C.domains.forEach(d=>d.questions.slice(0,3).forEach(q=>a[q.id].score=3));C.domains.find(d=>d.id==="D4").questions[3]&& (a["D4-Q4"].score=3);assert.ok(run(a).furtherAnalysisTriggers.some(x=>x.type==="Package Boundary Validation"),"boundary trigger");
+a=answers(3,true);setDomain(a,"D4",1);assert.ok(run(a).furtherAnalysisTriggers.some(x=>x.type==="Domain Deep Dive Recommended"),"outlier trigger");
+for(const track of ["nonclinical","clinical","him"]){assert.deepEqual(Object.keys(S[track]),["P1","P2","P3","P4","P5"]);assert.ok(Object.values(S[track]).flat().every(x=>x.archetype===track),`${track} catalog isolation`)}
+console.log("PASS: package bands, domain overrides, healthcare gates, confidence, further-analysis, and solution-catalog tests");
