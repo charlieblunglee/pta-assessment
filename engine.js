@@ -6,8 +6,9 @@
   const cap=(current,maxCode)=>Number(current.code.slice(1))>Number(maxCode.slice(1))?pkg(maxCode):current;
   function evaluate(input){
     const domainResults=C.domains.map(d=>{
+      const answered=d.questions.filter(q=>Number(input.answers[q.id]?.score)>=1).length;
       const raw=d.questions.reduce((s,q)=>s+Number(input.answers[q.id]?.score||0),0);
-      const precise=Math.max(0,((raw-7)/14)*100);
+      const precise=answered===d.questions.length?Math.max(0,20+((raw-7)/14)*80):0;
       return {id:d.id,name:d.name,weight:d.weight,raw,precise,score:Math.round(precise),maturity:maturity(Math.round(precise))};
     });
     const programPrecise=domainResults.reduce((s,d)=>s+d.precise*(d.weight/100),0);
