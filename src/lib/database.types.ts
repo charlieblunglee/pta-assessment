@@ -1,0 +1,31 @@
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+
+export type Database = {
+  public: {
+    Enums: {
+      app_role: "respondent" | "organization_admin" | "platform_admin";
+      assessment_status: "draft" | "in_progress" | "submitted" | "archived";
+      healthcare_archetype: "nonclinical" | "clinical" | "him";
+      confidence_level: "low" | "moderate" | "high";
+      assessment_disposition: "recommendation_ready" | "targeted_further_analysis" | "deep_dive_required";
+      delivery_status: "queued" | "sent" | "delivered" | "failed" | "bounced";
+    };
+    Tables: {
+      organizations: { Row: { id: string; name: string; status: string; created_at: string; updated_at: string }; Insert: { id?: string; name: string; status?: string }; Update: { name?: string; status?: string } };
+      profiles: { Row: { id: string; display_name: string | null; created_at: string; updated_at: string }; Insert: { id: string; display_name?: string | null }; Update: { display_name?: string | null } };
+      organization_memberships: { Row: { id: string; organization_id: string; user_id: string; role: Database["public"]["Enums"]["app_role"]; created_at: string; updated_at: string }; Insert: { organization_id: string; user_id: string; role?: Database["public"]["Enums"]["app_role"] }; Update: { role?: Database["public"]["Enums"]["app_role"] } };
+      assessments: { Row: { id: string; organization_id: string; owner_user_id: string; industry_configuration_id: string; archetype_configuration_id: string; status: Database["public"]["Enums"]["assessment_status"]; healthcare_archetype: Database["public"]["Enums"]["healthcare_archetype"]; company: string; line_of_business: string; assessment_date: string; confidentiality_acknowledged_at: string | null; mixed_work: boolean; submitted_at: string | null; created_at: string; updated_at: string }; Insert: { organization_id: string; owner_user_id: string; industry_configuration_id: string; archetype_configuration_id: string; healthcare_archetype: Database["public"]["Enums"]["healthcare_archetype"]; company: string; line_of_business: string; assessment_date?: string; status?: Database["public"]["Enums"]["assessment_status"] }; Update: Partial<Database["public"]["Tables"]["assessments"]["Insert"]> };
+      assessment_responses: { Row: { id: string; assessment_id: string; domain_code: string; question_code: string; score: number; evidence_note: string | null; created_at: string; updated_at: string }; Insert: { assessment_id: string; domain_code: string; question_code: string; score: number; evidence_note?: string | null }; Update: { score?: number; evidence_note?: string | null } };
+      assessment_domains: { Row: { id: string; assessment_id: string; domain_code: string; answered_count: number; weight: number; raw_score: number | null; normalized_score: number | null; maturity: string | null; created_at: string; updated_at: string }; Insert: never; Update: never };
+      assessment_results: { Row: { id: string; assessment_id: string; calculation_version: string; overall_weighted_score: number; maturity: string; base_package: string; triggered_overrides: Json; healthcare_governance_caps: Json; final_package: string; lowest_domain: string; strongest_domain: string; confidence_score: number; confidence_level: Database["public"]["Enums"]["confidence_level"]; assessment_disposition: Database["public"]["Enums"]["assessment_disposition"]; recommended_deep_dive: string | null; executive_summary_data: Json; recommendation_explanation: Json; created_at: string; updated_at: string }; Insert: never; Update: never };
+      recommendations: { Row: { id: string; assessment_result_id: string; archetype: Database["public"]["Enums"]["healthcare_archetype"]; package: string; priority: string; domain_code: string; component: string; title: string; description: string; rationale: string; expected_outcome: string; dependencies: Json; guardrails: Json; metrics: Json; sort_order: number; created_at: string; updated_at: string }; Insert: never; Update: never };
+      assessment_evidence_metadata: { Row: { id: string; assessment_id: string; response_id: string; storage_bucket: string; storage_path: string; original_filename: string; content_type: string; size_bytes: number; sha256: string | null; scan_status: string; created_at: string; updated_at: string }; Insert: { assessment_id: string; response_id: string; storage_path: string; original_filename: string; content_type: string; size_bytes: number }; Update: never };
+      email_delivery_log: { Row: { id: string; assessment_id: string; requested_by: string; recipient_domain: string | null; recipient_hash: string; provider: string; provider_message_id: string | null; status: Database["public"]["Enums"]["delivery_status"]; error_category: string | null; attempted_at: string; delivered_at: string | null; created_at: string; updated_at: string }; Insert: never; Update: never };
+      industry_configuration: { Row: { id: string; key: string; version: number; name: string; definition: Json; status: string; published_at: string | null; created_by: string | null; created_at: string; updated_at: string }; Insert: never; Update: never };
+      archetype_configuration: { Row: { id: string; industry_configuration_id: string; archetype: Database["public"]["Enums"]["healthcare_archetype"]; version: number; title: string; definition: Json; status: string; published_at: string | null; created_by: string | null; created_at: string; updated_at: string }; Insert: never; Update: never };
+    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    CompositeTypes: Record<string, never>;
+  };
+};
