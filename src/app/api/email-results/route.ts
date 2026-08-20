@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
     // Persist only delivery metadata in email_delivery_log after Supabase server authentication is configured.
     return NextResponse.json({ ok: true, deliveryId: createHash("sha256").update(delivery.id).digest("hex").slice(0,16) });
   } catch (error) {
+    const diagnostic = error instanceof Error ? error.message : "EMAIL_UNKNOWN_ERROR";
+    console.error("Email delivery failed", { diagnostic });
     const code = error instanceof Error && error.message === "EMAIL_NOT_CONFIGURED" ? 503 : 502;
     return NextResponse.json({ error: "We couldn't send your results. Your assessment remains available." }, { status: code });
   }

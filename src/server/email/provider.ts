@@ -80,7 +80,11 @@ export class BrevoEmailProvider implements EmailProvider {
         htmlContent: message.html
       })
     });
-    if (!response.ok) throw new Error(`EMAIL_PROVIDER_${response.status}`);
+    if (!response.ok) {
+      const payload = await response.json().catch(() => null) as { code?: string } | null;
+      const safeCode = payload?.code?.replace(/[^A-Za-z0-9_-]/g, "_").slice(0, 80) || "UNKNOWN";
+      throw new Error(`EMAIL_PROVIDER_BREVO_${response.status}_${safeCode}`);
+    }
     const data = await response.json() as { messageId?: string };
     if (!data.messageId) throw new Error("EMAIL_PROVIDER_INVALID_RESPONSE");
     return { id: data.messageId };
