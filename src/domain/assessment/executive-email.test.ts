@@ -1,6 +1,4 @@
 import { describe, expect, it } from "vitest";
-    expect(html).toContain("this mailbox is not monitored for replies");
-    expect(html).toContain("Your transformation journey starts with a conversation");
 import { buildExecutiveEmailHtml } from "./executive-email.ts";
 import { evaluateAssessment } from "./scoring.ts";
 import type { AnswerInput } from "./types.ts";
@@ -29,6 +27,8 @@ describe("executive assessment email", () => {
     expect(html).toContain("How Concentrix can help");
     expect(html).toContain("Further analysis");
     expect(html).toContain("Executive summary");
+    expect(html).toContain("this mailbox is not monitored for replies");
+    expect(html).toContain("Your transformation journey starts with a conversation");
   });
 
   it("never includes evidence notes or artifact content", () => {
