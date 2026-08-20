@@ -82,6 +82,12 @@ export function buildExecutiveEmailHtml(input: ExecutiveEmailInput): string {
       <h2 style="color:#073447;border-bottom:2px solid #15b8a6;padding-bottom:7px">Further analysis</h2>
       <p><strong>${escapeHtml(evidence.headline)}</strong></p><p>${escapeHtml(evidence.explanation)}</p>
       <h3 style="color:#073447">Consultant analysis scope</h3>${list(evidence.consultantScope)}
+      <div style="background:#e9f7f5;border:1px solid #b8ded8;border-radius:10px;padding:20px;margin-top:28px">
+        <p style="margin:0 0 12px"><strong>Please note that this mailbox is not monitored for replies.</strong></p>
+        <p style="margin:0 0 12px">To explore the next steps and begin your program’s transformation journey, please reach out to your Concentrix representative. Our team will be happy to discuss your results, identify potential opportunities, and help determine the right path forward for your program.</p>
+        <p style="color:#073447;font-size:17px;margin:0"><strong>Your transformation journey starts with a conversation—and Concentrix is here to help you take the next step.</strong></p>
+      </div>
+
 
       <h2 style="color:#073447;border-bottom:2px solid #15b8a6;padding-bottom:7px">Executive summary</h2>
       <p>${escapeHtml(company)} achieved a Program Technology Profile Score of ${result.programScore}, placing the program in the ${escapeHtml(result.maturity)} maturity range. The recommended direction is ${escapeHtml(result.finalPackage.code)} — ${escapeHtml(result.finalPackage.name)}, with ${escapeHtml(result.lowestDomain.id)} — ${escapeHtml(result.lowestDomain.name)} as the primary technology focus. Assessment confidence is ${escapeHtml(result.confidenceLevel)} at ${result.confidenceScore}%.</p>
