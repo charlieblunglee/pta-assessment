@@ -132,7 +132,7 @@ export function evaluateFurtherAnalysis(
   const lowest = determineLowestDomain(domains);
   const underdeveloped = domains.filter((domain) => domain.preciseScore <= 61);
   const techLed = domains.filter((domain) => domain.preciseScore >= 90);
-  if (confidence.score < 70) triggers.push({ type: "Low Evidence", detail: "Supporting evidence is below the configured recommendation threshold." });
+  if (confidence.score < 70) triggers.push({ type: "Low Evidence", detail: "Most responses were submitted without an evidence note or artifact. The recommendation is directional until a consultant validates how the priority workflow operates in practice." });
   else if (confidence.score < 85) triggers.push({ type: "Targeted Validation", detail: "Selected findings should be validated before final solution design." });
   if ([48, 62, 76, 90].some((boundary) => Math.abs(programScore - boundary) <= CONFIG.thresholds.packageBoundaryTolerance)) triggers.push({ type: "Package Boundary Validation", detail: "A small scoring difference could change the maturity tier." });
   const otherMean = domains.filter((domain) => domain.id !== lowest.id).reduce((sum, domain) => sum + domain.preciseScore, 0) / 5;
