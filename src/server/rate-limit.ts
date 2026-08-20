@@ -10,7 +10,10 @@ export async function enforceEmailRateLimit(identifier: string): Promise<boolean
     headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
     body: JSON.stringify([["INCR", key], ["EXPIRE", key, 60, "NX"]])
   });
-  if (!response.ok) return false;
+  if (!response.ok) {
+    console.error("Email rate limit unavailable", { status: response.status });
+    return false;
+  }
   const values = await response.json() as { result?: number }[];
   return Number(values[0]?.result ?? 99) <= 5;
 }
