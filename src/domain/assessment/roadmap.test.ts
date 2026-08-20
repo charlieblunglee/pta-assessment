@@ -25,7 +25,7 @@ describe("executive roadmap", () => {
     const { result, answers } = assessment(1, 0);
     const roadmap = buildExecutiveRoadmap(result, answers, "nonclinical");
     expect(roadmap).toHaveLength(3);
-    expect(roadmap[0].objective).toContain("7 of 7 D1 capabilities as Human-Led");
+    expect(roadmap[0].objective).toContain("7 of 7 capabilities in D1 — Work Execution & Digitization as Human-Led");
     expect(roadmap[0].leadershipActions.length).toBeGreaterThanOrEqual(3);
     expect(roadmap[0].concentrixCapabilities).toContain("Business Transformation");
   });

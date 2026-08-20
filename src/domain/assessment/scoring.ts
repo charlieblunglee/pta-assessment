@@ -136,7 +136,7 @@ export function evaluateFurtherAnalysis(
   else if (confidence.score < 85) triggers.push({ type: "Targeted Validation", detail: "Selected findings should be validated before final solution design." });
   if ([48, 62, 76, 90].some((boundary) => Math.abs(programScore - boundary) <= CONFIG.thresholds.packageBoundaryTolerance)) triggers.push({ type: "Package Boundary Validation", detail: "A small scoring difference could change the maturity tier." });
   const otherMean = domains.filter((domain) => domain.id !== lowest.id).reduce((sum, domain) => sum + domain.preciseScore, 0) / 5;
-  if (otherMean - lowest.preciseScore >= CONFIG.thresholds.outlierGap) triggers.push({ type: "Domain Deep Dive Recommended", detail: `${lowest.id} is materially below the remaining domain profile.` });
+  if (otherMean - lowest.preciseScore >= CONFIG.thresholds.outlierGap) triggers.push({ type: "Domain Deep Dive Recommended", detail: `${lowest.id} — ${lowest.name} is materially below the remaining domain profile.` });
   if (techLed.length >= 2 && underdeveloped.length >= 1) triggers.push({ type: "Mixed Maturity Profile", detail: "Highly mature capabilities coexist with one or more under-developed domains." });
   if (caps.length) {
     const gateIds = [CONFIG.governance.privacyQuestionId, CONFIG.governance.aiGovernanceQuestionId];
@@ -153,7 +153,7 @@ export function evaluateFurtherAnalysis(
 export function buildRecommendationExplanation(args: Omit<RecommendationExplanation, "summary">): RecommendationExplanation {
   const overrideText = args.triggeredOverrides.length ? args.triggeredOverrides.map((item) => item.reason).join(" ") : "No foundational package override was triggered.";
   const capText = args.complianceCaps.length ? args.complianceCaps.map((item) => item.reason).join(" ") : "No healthcare governance cap was triggered.";
-  return { ...args, summary: `The weighted program score supports ${args.basePackage.code} - ${args.basePackage.name}. ${overrideText} ${capText} ${args.lowestDomain.name} is the primary focus of the ${args.finalPackage.code} roadmap.` };
+  return { ...args, summary: `The weighted program score supports ${args.basePackage.code} — ${args.basePackage.name}. ${overrideText} ${capText} ${args.lowestDomain.id} — ${args.lowestDomain.name} is the primary focus of the ${args.finalPackage.code} — ${args.finalPackage.name} roadmap.` };
 }
 
 function scoreDomain(definition: DomainDefinition, answers: readonly AnswerInput[]): DomainResult {

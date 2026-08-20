@@ -70,7 +70,7 @@ export function buildExecutiveRoadmap(result: CompletedAssessmentResult, answers
     ...phase,
     horizon: index === 0 ? "0–30 days · Diagnose" : index === 1 ? "30–90 days · Design & Pilot" : "90–180+ days · Prove & Scale",
     objective: index === 0 && humanLed > 0
-      ? `${phase.objective} The assessment identified ${humanLed} of 7 ${focus} capabilities as Human-Led, so workflow validation should precede technology selection.`
+      ? `${phase.objective} The assessment identified ${humanLed} of 7 capabilities in ${focus} — ${result.lowestDomain.name} as Human-Led, so workflow validation should precede technology selection.`
       : phase.objective,
     decisionGate: gates[index]
   }));
