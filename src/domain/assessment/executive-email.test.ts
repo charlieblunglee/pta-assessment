@@ -24,7 +24,7 @@ describe("executive assessment email", () => {
     expect(html).toContain("Recommended roadmap");
     expect(html).toContain("Map and stabilize priority workflows");
     expect(html).toContain("What leadership can do");
-    expect(html).toContain("How Concentrix can help");
+    expect(html).toContain("What you need help on");
     expect(html).toContain("Further analysis");
     expect(html).toContain("Executive summary");
     expect(html).toContain("this mailbox is not monitored for replies");

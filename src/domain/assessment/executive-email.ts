@@ -38,7 +38,7 @@ export function buildExecutiveEmailHtml(input: ExecutiveEmailInput): string {
     <h3 style="color:#073447;margin:6px 0 8px">${escapeHtml(phase.title)}</h3>
     <p style="margin:0 0 14px">${escapeHtml(phase.objective)}</p>
     <h4 style="margin:10px 0 0;color:#073447">What leadership can do</h4>${list(phase.leadershipActions)}
-    <h4 style="margin:14px 0 0;color:#073447">How Concentrix can help</h4>${list(phase.concentrixCapabilities)}
+    <h4 style="margin:14px 0 0;color:#073447">What you need help on</h4>${list(phase.concentrixCapabilities)}
     <h4 style="margin:14px 0 0;color:#073447">Expected outputs</h4>${list(phase.outcomes)}
     <p style="background:#eef7f8;border-left:4px solid #15b8a6;padding:10px 12px;margin:14px 0 0"><strong>Executive decision gate:</strong> ${escapeHtml(phase.decisionGate)}</p>
   </div>`).join("");
