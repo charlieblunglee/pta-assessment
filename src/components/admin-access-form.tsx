@@ -1,0 +1,9 @@
+"use client";
+import { useState } from "react";
+type Grant={email:string;respondents:boolean;results:boolean;answers:boolean};
+export function AdminAccessForm({grants}:{grants:Grant[]}) {
+  const [draft,setDraft]=useState<Grant>({email:"",respondents:false,results:false,answers:false});
+  const [message,setMessage]=useState("");const [busy,setBusy]=useState(false);
+  async function save(event:React.FormEvent){event.preventDefault();setBusy(true);setMessage("");try{const r=await fetch("/api/admin/access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(draft)});if(!r.ok)throw new Error();window.location.reload();}catch{setMessage("Could not save access. Please retry.");}finally{setBusy(false);}}
+  return <><p>Grant only the data needed. Permissions include viewing and downloading. Clear every checkbox to revoke access. Results/answers without Respondents access hide email and company identity.</p><form onSubmit={save}><label htmlFor="grant-email">Authorized email</label><input id="grant-email" type="email" required value={draft.email} onChange={e=>setDraft({...draft,email:e.target.value})}/><div className="admin-checks">{(["respondents","results","answers"] as const).map(key=><label key={key}><input type="checkbox" checked={draft[key]} onChange={e=>setDraft({...draft,[key]:e.target.checked})}/>{key === "respondents"?"Respondent email and company":key}</label>)}</div><button className="button" disabled={busy}>{busy?"Saving…":"Save access"}</button></form>{message&&<p role="alert">{message}</p>}<h2>Current permissions</h2>{grants.length===0?<p>No delegated access yet.</p>:grants.map(g=><article className="card" key={g.email}><strong>{g.email}</strong><p>{(["respondents","results","answers"] as const).filter(k=>g[k]).join(", ")||"Access revoked"}</p><button className="button secondary" onClick={()=>setDraft(g)}>Edit access</button></article>)}</>;
+}

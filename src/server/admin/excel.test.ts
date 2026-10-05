@@ -1,0 +1,3 @@
+import {describe,expect,it} from "vitest";
+import {excelWorkbook} from "./excel";
+describe("Excel export",()=>{it("produces an OOXML ZIP and keeps dangerous input literal",()=>{const bytes=excelWorkbook([{email:"=HYPERLINK(\"bad\")",answer:"<&>",score:2}]);expect(bytes.readUInt32LE(0)).toBe(0x04034b50);const content=bytes.toString();expect(content).toContain("xl/worksheets/sheet1.xml");expect(content).toContain("t=\"inlineStr\"");expect(content).toContain("&lt;&amp;&gt;");expect(content).not.toContain("<f>");});it("supports empty exports",()=>expect(excelWorkbook([]).length).toBeGreaterThan(1000));});
