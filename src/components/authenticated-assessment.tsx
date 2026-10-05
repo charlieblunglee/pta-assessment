@@ -12,7 +12,9 @@ export function AuthenticatedAssessment({ initialEmail }: { initialEmail: string
   const [signedInEmail, setSignedInEmail] = useState(initialEmail);
   const [verificationError, setVerificationError] = useState("");
   const [verifying, setVerifying] = useState(false);
+  const [started, setStarted] = useState(false);
   if (signedInEmail) return <AssessmentExperience authenticatedEmail={signedInEmail} />;
+  if (!started) return <main id="main" className="shell landing-shell"><section className="panel landing-panel"><img className="landing-logo" src="/himap-email-logo.png" alt="Healthcare Information Management Association of the Philippines"/><p className="eyebrow">HIMAP assessment</p><h1>Technology Profile Assessment</h1><p className="lead">Discover your technology strengths and the opportunities to take your program forward.</p><button className="button" onClick={() => setStarted(true)}>Click here to start</button><p className="landing-note">Verify your email with a code, then complete the assessment at your own pace.</p></section></main>;
 
   const verifyCode = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -35,7 +37,7 @@ export function AuthenticatedAssessment({ initialEmail }: { initialEmail: string
     } catch { setStatus("error"); }
   };
 
-  return <><header className="site-header"><img src="/concentrix-logo.png" alt="Concentrix"/><span>HIMAP Program Technology Profile</span></header><main id="main" className="shell"><section className="panel narrow">
+  return <><header className="site-header"><img src="/himap-email-logo.png" alt="HIMAP"/><span>Technology Profile Assessment</span></header><main id="main" className="shell"><section className="panel narrow">
     <p className="eyebrow">Secure assessment access</p><h1>Sign in to begin or resume</h1>
     <p className="lead">Enter your email. We will send a verification code. No password required.</p>
     <form onSubmit={sendLink}>

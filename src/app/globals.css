@@ -2,3 +2,33 @@
 .executive-roadmap{display:grid;gap:22px;margin:24px 0}.roadmap-phase{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(0,59,92,.06)}.roadmap-phase-head{display:flex;align-items:flex-start;gap:16px;padding:22px 24px 8px}.roadmap-phase-head h3{margin:8px 0 0;font-size:1.35rem;color:var(--navy)}.phase-number{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;font-size:1.15rem;font-weight:850}.roadmap-objective{padding:0 24px 18px;margin:0;color:var(--muted);font-size:1.04rem}.roadmap-columns{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}.roadmap-columns>div{padding:22px 24px}.roadmap-columns h4{margin:0 0 10px;color:var(--navy);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}.roadmap-columns ul,.analysis-steps{margin:0;padding-left:20px}.roadmap-columns li,.analysis-steps li{margin:8px 0}.concentrix-panel{background:linear-gradient(145deg,#eafafa,#f3fffd)}.capability-list{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 20px}.capability{display:inline-flex;border:1px solid #8bd8d1;background:#fff;color:#075f5c;border-radius:999px;padding:5px 9px;font-size:.78rem;font-weight:750}.decision-gate{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:15px 24px;background:var(--navy);color:#fff}.decision-gate strong{text-transform:uppercase;letter-spacing:.06em;font-size:.76rem}.decision-gate span{opacity:.88}.analysis-steps{display:grid;gap:9px}.analysis-steps li{padding-left:6px}
 @media(max-width:760px){.site-header span{display:none}.shell{width:min(100% - 20px,1120px);margin-top:16px}.panel{padding:22px 18px}.grid,.tracks,.hero-results .grid{grid-template-columns:1fr}.hero-results .grid{gap:20px}.progress-meta{font-size:.9rem}.sticky{position:sticky;bottom:8px;background:rgba(255,255,255,.96);padding:10px 0}.button{flex:1}.review-row,.domain-row{align-items:flex-start;flex-direction:column;gap:3px}.roadmap-columns{grid-template-columns:1fr}.roadmap-phase-head{padding:18px 18px 8px}.roadmap-objective,.roadmap-columns>div{padding-left:18px;padding-right:18px}.decision-gate{grid-template-columns:1fr;gap:5px;padding:15px 18px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* HIMAP brand: white space, blue navigation, and restrained red/yellow accents. */
+:root{--navy:#1010a8;--ink:#20243a;--muted:#62677c;--teal:#1717bc;--line:#e3e5ef;--bg:#f8f9fd;--yellow:#ffce00;--blue:#1515ba;--danger:#b60000;--shadow:0 12px 36px rgba(24,24,95,.05)}
+body{min-height:100vh;display:flex;flex-direction:column}
+.site-header{height:100px;background:#fff;color:var(--navy);border-bottom:3px solid var(--yellow)}
+.site-header img{width:146px;max-height:82px;object-fit:contain}
+.site-header span{font-weight:750;letter-spacing:.06em}
+.shell{flex:1;margin-bottom:48px}
+.eyebrow{color:var(--navy);letter-spacing:.08em}
+.button{background:var(--navy);border-radius:9px;transition:background .15s ease}
+.button:hover:not(:disabled){background:#080875}
+.button.secondary:hover:not(:disabled){background:#f0f0ff}
+.notice,.actions{background:#f1f3ff}.notice{border-left-color:var(--navy)}
+.warning{background:#fffbea;border-left-color:var(--yellow)}
+.pill{background:#eeeeff;color:var(--navy)}
+.concentrix-panel{background:#f6f7fd}
+.capability{border-color:#d4d6ef;color:var(--navy)}
+.choice:has(input:checked){background:#f4f4ff}
+.hero-results{background:#f0f2ff;color:var(--ink);border:1px solid var(--line);border-top:4px solid #bd0000}
+.hero-results .metric,.hero-results .metric-label{color:var(--navy)}
+.brand-footer{background:#fff;border-top:1px solid var(--line);padding:24px;text-align:center}
+.brand-footer img{display:block;width:180px;height:auto;margin:0 auto}
+.landing-shell{display:grid;place-items:center;padding:24px 0}
+.landing-panel{text-align:center;width:min(820px,100%);border-top:4px solid var(--yellow)}
+.landing-logo{display:block;width:min(350px,85%);height:auto;margin:0 auto 32px}
+.landing-panel .lead{margin:24px auto 30px;max-width:590px}
+.landing-note{font-size:.9rem;color:var(--muted);margin:22px auto 0;max-width:470px}
+.instructions{margin-top:28px;padding:20px 24px;background:#f8f9fd;border-radius:12px;border-left:4px solid var(--yellow)}
+.instructions h2{font-size:1.25rem;margin:0 0 12px}.instructions ol{padding-left:22px;margin:0}.instructions li{margin:10px 0}
+@media(max-width:760px){.site-header{height:88px}.site-header img{width:128px;max-height:72px}.landing-logo{width:min(280px,85%)}.instructions{padding:18px}.landing-panel h1{font-size:2.25rem}}
