@@ -4,6 +4,7 @@ import { adminRows } from "@/server/admin/data";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { AdminAccessForm } from "@/components/admin-access-form";
 import { AdminNotificationRetry } from "@/components/admin-notification-retry";
+import { AdminCleanup } from "@/components/admin-cleanup";
 
 export default async function AdminSection({params,searchParams}:{params:Promise<{section:string}>;searchParams:Promise<{page?:string;assessmentId?:string}>}) {
   const {section}=await params; const search=await searchParams;
@@ -13,7 +14,7 @@ export default async function AdminSection({params,searchParams}:{params:Promise
     if(!access.owner) return <section className="panel"><h1>Access denied</h1><p>Only the owner can manage permissions.</p></section>;
     const {data,error}=await createSupabaseAdminClient().from("admin_access").select("email,respondents,results,answers").order("email");
     if(error) throw new Error("Could not load access settings");
-    return <section className="panel"><p className="eyebrow">Owner only</p><h1>Access management</h1><AdminAccessForm grants={data??[]}/><AdminNotificationRetry/></section>;
+    return <section className="panel"><p className="eyebrow">Owner only</p><h1>Access management</h1><AdminAccessForm grants={data??[]}/><AdminNotificationRetry/><AdminCleanup/></section>;
   }
   const kind=section as Permission;
   if(!access.permissions[kind]) return <section className="panel"><h1>Access denied</h1><p>You have not been granted access to this data.</p></section>;
