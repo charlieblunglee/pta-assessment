@@ -46,10 +46,10 @@ export function buildExecutiveEmailHtml(input: ExecutiveEmailInput): string {
   return `<!doctype html><html><body style="margin:0;background:#f2f6f7;color:#17323d;font-family:Arial,sans-serif;line-height:1.5">
   <div style="display:none;max-height:0;overflow:hidden">Your HIMAP executive assessment results and recommended roadmap.</div>
   <div style="max-width:760px;margin:auto;background:#fff">
-    <div style="background:#034864;color:#fff;padding:22px 28px"><div style="font-size:24px;font-weight:700">concentrix</div><div style="font-size:12px;margin-top:6px;letter-spacing:.08em">HIMAP PROGRAM TECHNOLOGY PROFILE</div></div>
+    <div style="background:#fff;text-align:center;border-bottom:4px solid #ffce00;padding:22px 28px"><img src="https://himap-pi.vercel.app/himap-email-logo.png" width="240" alt="HIMAP — Healthcare Information Management Association of the Philippines" style="display:block;max-width:100%;height:auto;margin:auto"/></div>
     <div style="padding:28px">
-      <p style="color:#087f8c;font-size:12px;font-weight:700;text-transform:uppercase;margin:0">Executive healthcare technology diagnostic</p>
-      <h1 style="color:#073447;font-size:28px;line-height:1.15;margin:6px 0 8px">Program Technology Profile Assessment</h1>
+      <p style="color:#1010a8;font-size:12px;font-weight:700;margin:0">Healthcare Information Management Association of the Philippines</p>
+      <h1 style="color:#1010a8;font-size:28px;line-height:1.15;margin:6px 0 8px">Technology Profile Assessment</h1>
       <p style="margin:0 0 22px"><strong>${escapeHtml(company)}</strong> · ${escapeHtml(lineOfBusiness)}<br>${escapeHtml(TRACK_NAMES[archetype])} · ${escapeHtml(assessmentDate)}</p>
 
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:8px"><tr>
@@ -94,5 +94,6 @@ export function buildExecutiveEmailHtml(input: ExecutiveEmailInput): string {
 
       <p style="font-size:12px;color:#61747c;border-top:1px solid #d8e3e7;padding-top:16px;margin-top:28px">This email contains assessment findings only. Uploaded artifacts, evidence files, evidence notes, PHI, and patient information are excluded. Acronyms are expanded when first used.</p>
     </div>
-  </div></body></html>`;
+    <div style="padding:22px;text-align:center;border-top:1px solid #e3e5ef"><img src="https://himap-pi.vercel.app/powered-by-concentrix.png" width="160" alt="Powered by Concentrix" style="display:block;max-width:100%;height:auto;margin:auto"/></div>
+  </div></body></html>`.replaceAll("#073447", "#1010a8").replaceAll("#087f8c", "#1010a8").replaceAll("#15b8a6", "#ffce00").replaceAll("#e9f7f5", "#f1f3ff").replaceAll("#eef7f8", "#f1f3ff").replaceAll("#f2f6f7", "#f8f9fd");
 }
