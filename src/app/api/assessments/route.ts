@@ -6,6 +6,8 @@ import type { AnswerInput, AssessmentDisposition, ConfidenceLevel } from "@/doma
 import type { Json } from "@/lib/database.types";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { after } from "next/server";
+import { deliverSubmissionNotification } from "@/server/admin/notifications";
 
 const answerSchema = z.object({
   questionId: z.string().regex(/^D[1-6]-Q[1-7]$/),
@@ -81,6 +83,7 @@ export async function POST(request: Request) {
   const assessmentId = parsed.data.assessmentId;
   const owned = await admin.from("assessments").select("id,status").eq("id",assessmentId).eq("owner_user_id",user.id).maybeSingle();
   if (!owned.data) return NextResponse.json({ error:"Assessment not found" }, { status:404 });
+  if (owned.data.status === "submitted") return NextResponse.json({ submitted:true, alreadySubmitted:true });
   const rows = parsed.data.answers.map(answer=>({ assessment_id:assessmentId, domain_code:answer.domainId, question_code:answer.questionId, score:answer.value, evidence_note:answer.evidenceNote?.trim()||null }));
   if (rows.length) {
     const saved = await admin.from("assessment_responses").upsert(rows,{onConflict:"assessment_id,question_code"});
@@ -105,5 +108,6 @@ export async function POST(request: Request) {
   if (recommendationWrite.error) return NextResponse.json({ error:"Could not save recommendations" }, { status:500 });
   const completed = await admin.from("assessments").update({ status:"submitted", submitted_at:new Date().toISOString() }).eq("id",parsed.data.assessmentId).eq("owner_user_id",user.id);
   if (completed.error) return NextResponse.json({ error:"Could not finalize assessment" }, { status:500 });
+  after(() => deliverSubmissionNotification(assessmentId).then(()=>{}));
   return NextResponse.json({ submitted:true, result:summary });
 }

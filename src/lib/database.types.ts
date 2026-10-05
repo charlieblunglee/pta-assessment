@@ -11,6 +11,8 @@ export type Database = {
       delivery_status: "queued" | "sent" | "delivered" | "failed" | "bounced";
     };
     Tables: {
+      admin_access: { Row: { email:string; respondents:boolean; results:boolean; answers:boolean; updated_by:string; updated_at:string }; Insert: { email:string; respondents:boolean; results:boolean; answers:boolean; updated_by:string; updated_at?:string }; Update: Partial<Database["public"]["Tables"]["admin_access"]["Insert"]> };
+      submission_notifications: { Row: { assessment_id:string; status:string; attempted_at:string|null; sent_at:string|null; created_at:string }; Insert: { assessment_id:string; status?:string }; Update: { status?:string; attempted_at?:string; sent_at?:string } };
       organizations: { Row: { id: string; name: string; status: string; created_at: string; updated_at: string }; Insert: { id?: string; name: string; status?: string }; Update: { name?: string; status?: string } };
       profiles: { Row: { id: string; display_name: string | null; created_at: string; updated_at: string }; Insert: { id: string; display_name?: string | null }; Update: { display_name?: string | null } };
       organization_memberships: { Row: { id: string; organization_id: string; user_id: string; role: Database["public"]["Enums"]["app_role"]; created_at: string; updated_at: string }; Insert: { organization_id: string; user_id: string; role?: Database["public"]["Enums"]["app_role"] }; Update: { role?: Database["public"]["Enums"]["app_role"] } };
