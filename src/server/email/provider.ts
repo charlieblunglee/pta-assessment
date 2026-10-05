@@ -1,3 +1,5 @@
+import nodemailer from "nodemailer";
+
 export interface ExecutiveEmail {
   to: string;
   subject: string;
@@ -87,9 +89,40 @@ export class BrevoEmailProvider implements EmailProvider {
   }
 }
 
+export class GmailEmailProvider implements EmailProvider {
+  constructor(private readonly password: string, private readonly from: string) {}
+
+  async send(message: ExecutiveEmail): Promise<{ id: string }> {
+    const transport = nodemailer.createTransport({
+      host: "smtp.gmail.com", port: 465, secure: true,
+      auth: { user: "techandinnovationcouncil@himap.ph", pass: this.password },
+      connectionTimeout: 10000, greetingTimeout: 10000, socketTimeout: 20000
+    });
+    try {
+      const info = await transport.sendMail({
+        from: this.from, to: message.to, subject: message.subject, html: message.html
+      });
+      if (!info.messageId || !info.accepted?.length || info.rejected?.length) {
+        throw new Error("EMAIL_PROVIDER_RECIPIENT_REJECTED");
+      }
+      return { id: info.messageId };
+    } catch {
+      // Never expose SMTP credentials, recipient details, or provider responses.
+      throw new Error("EMAIL_PROVIDER_SMTP_FAILED");
+    } finally {
+      transport.close();
+    }
+  }
+}
+
 export function getEmailProvider(): EmailProvider {
   const provider = (process.env.EMAIL_PROVIDER || "brevo").toLowerCase();
   const from = "HIMAP Technology and Innovation Council <techandinnovationcouncil@himap.ph>";
+  if (provider === "gmail") {
+    const password = process.env.GMAIL_APP_PASSWORD?.replace(/\s/g, "");
+    if (!password) throw new Error("EMAIL_NOT_CONFIGURED");
+    return new GmailEmailProvider(password, from);
+  }
   if (provider === "brevo") {
     const key = process.env.BREVO_API_KEY;
     if (!key) throw new Error("EMAIL_NOT_CONFIGURED");
