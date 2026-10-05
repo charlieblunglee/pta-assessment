@@ -27,7 +27,7 @@ export type Database = {
       archetype_configuration: { Row: { id: string; industry_configuration_id: string; archetype: Database["public"]["Enums"]["healthcare_archetype"]; version: number; title: string; definition: Json; status: string; published_at: string | null; created_by: string | null; created_at: string; updated_at: string }; Insert: never; Update: never };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: { delete_assessment_admin: { Args: { target_id:string; expected_updated_at:string }; Returns:string } };
     CompositeTypes: Record<string, never>;
   };
 };
