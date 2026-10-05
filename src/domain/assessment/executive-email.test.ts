@@ -18,7 +18,9 @@ describe("executive assessment email", () => {
     const result = evaluateAssessment({ answers, archetype: "nonclinical" });
     if (result.status !== "scored") throw new Error("Expected scored result");
     const html = buildExecutiveEmailHtml({ company: "Example Health", lineOfBusiness: "Member Services", archetype: "nonclinical", assessmentDate: "2026-08-21", answers, result });
-    expect(html).toContain("Program Technology Profile Assessment");
+    expect(html).toContain("Technology Profile Assessment");
+    expect(html).toContain("himap-email-logo.png");
+    expect(html).toContain("powered-by-concentrix.png");
     expect(html).toContain("Why this recommendation");
     expect(html).toContain("Six-domain profile");
     expect(html).toContain("Recommended roadmap");

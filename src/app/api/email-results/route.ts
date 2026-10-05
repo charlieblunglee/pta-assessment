@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     const result = evaluateAssessment({ answers: answers.map(a=>({...a,evidenceNote:null,hasArtifact:Boolean(a.hasArtifact)})), archetype });
     if (result.status !== "scored") return NextResponse.json({ error: "The assessment is incomplete." }, { status: 422 });
     const html = buildExecutiveEmailHtml({ company, lineOfBusiness, archetype, assessmentDate: new Date().toISOString().slice(0,10), answers, result });
-    const delivery = await getEmailProvider().send({ to: email, subject: "Your HIMAP Program Technology Profile Assessment Results", html });
+    const delivery = await getEmailProvider().send({ to: email, subject: "Your HIMAP Technology Profile Assessment Results", html });
     const admin = createSupabaseAdminClient();
     const assessment = await admin.from("assessments").select("id").eq("owner_user_id",user.id).in("status",["in_progress","submitted"]).order("updated_at",{ascending:false}).limit(1).maybeSingle();
     if (assessment.data) await admin.from("email_delivery_log").insert({ assessment_id:assessment.data.id, requested_by:user.id, recipient_domain:email.split("@")[1]??null, recipient_hash:createHash("sha256").update(email).digest("hex"), provider:"brevo", provider_message_id:delivery.id, status:"sent" });

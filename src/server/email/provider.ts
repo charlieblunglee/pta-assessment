@@ -89,8 +89,7 @@ export class BrevoEmailProvider implements EmailProvider {
 
 export function getEmailProvider(): EmailProvider {
   const provider = (process.env.EMAIL_PROVIDER || "brevo").toLowerCase();
-  const from = process.env.RESULTS_FROM_EMAIL;
-  if (!from) throw new Error("EMAIL_NOT_CONFIGURED");
+  const from = "HIMAP Technology and Innovation Council <techandinnovationcouncil@himap.ph>";
   if (provider === "brevo") {
     const key = process.env.BREVO_API_KEY;
     if (!key) throw new Error("EMAIL_NOT_CONFIGURED");
