@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
     if (assessment.data) await admin.from("email_delivery_log").insert({ assessment_id:assessment.data.id, requested_by:user.id, recipient_domain:email.split("@")[1]??null, recipient_hash:createHash("sha256").update(email).digest("hex"), provider:"brevo", provider_message_id:delivery.id, status:"sent" });
     return NextResponse.json({ ok: true, deliveryId: createHash("sha256").update(delivery.id).digest("hex").slice(0,16) });
   } catch (error) {
+    const diagnostic = error instanceof Error && /^EMAIL_[A-Z0-9_]+$/.test(error.message) ? error.message : "EMAIL_REQUEST_FAILED";
+    console.error("HIMAP_EMAIL_RESULTS_FAILURE", { code: diagnostic });
     const code = error instanceof Error && error.message === "EMAIL_NOT_CONFIGURED" ? 503 : 502;
     return NextResponse.json({ error: "We couldn't send your results. Your assessment remains available." }, { status: code });
   }
