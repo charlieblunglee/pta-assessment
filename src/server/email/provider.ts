@@ -106,8 +106,11 @@ export class GmailEmailProvider implements EmailProvider {
         throw new Error("EMAIL_PROVIDER_RECIPIENT_REJECTED");
       }
       return { id: info.messageId };
-    } catch {
+    } catch (error) {
       // Never expose SMTP credentials, recipient details, or provider responses.
+      const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "UNKNOWN";
+      const safeCode = ["EAUTH", "ETIMEDOUT", "ECONNECTION", "ESOCKET", "EENVELOPE", "EMESSAGE"].includes(code) ? code : "UNKNOWN";
+      console.error("HIMAP_EMAIL_SMTP_FAILURE", { code: safeCode });
       throw new Error("EMAIL_PROVIDER_SMTP_FAILED");
     } finally {
       transport.close();
@@ -116,7 +119,7 @@ export class GmailEmailProvider implements EmailProvider {
 }
 
 export function getEmailProvider(): EmailProvider {
-  const provider = (process.env.EMAIL_PROVIDER || "brevo").toLowerCase();
+  const provider = (process.env.EMAIL_PROVIDER || "brevo").trim().toLowerCase();
   const from = "HIMAP Technology and Innovation Council <techandinnovationcouncil@himap.ph>";
   if (provider === "gmail") {
     const password = process.env.GMAIL_APP_PASSWORD?.replace(/\s/g, "");
